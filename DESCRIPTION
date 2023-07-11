@@ -4,7 +4,8 @@ Version: 0.0.0.9000
 Authors@R: c(
     person("Gabor", "Csardi", , "csardi.gabor@gmail.com", role = c("aut", "cre"))
   )
-Description: What the package does (one paragraph).
+Description: The machinery behind the Bioconductor mirror at
+    <https://github.com/bioc>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
