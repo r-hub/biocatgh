@@ -1,4 +1,12 @@
 
+# We know that these repos have large files
+
+ignored <- c(
+  "Affyhgu133aExpr",
+  "Affyhgu133Plus2Expr",
+  "Affymoe4302Expr"
+)
+
 list_bioc_repos <- function() {
   url <- "https://git.bioconductor.org/"
   resp <- curl::curl_fetch_memory(url)
@@ -10,6 +18,8 @@ list_bioc_repos <- function() {
   txt <- readLines(con <- rawConnection(resp$content))
   txt <- grep("\tpackages/[^.]", txt, value = TRUE)
   pkgs <- sub("^.*\tpackages/", "", txt)
+
+  pkgs <- setdiff(pkgs, ignored)
 
   pkgs[order(tolower(pkgs))]
 }
