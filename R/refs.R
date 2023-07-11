@@ -8,6 +8,6 @@ async_get_repo_tags <- function(pkg) {
     "https://git.bioconductor.org/packages/%s",
     pkg
   )
-  pkgdepends:::async_git_dummy_list_refs(url)$
+  asNamespace("pkgdepends")$async_git_dummy_list_refs(url)$
     then(function(ret) ret$refs)
 }
