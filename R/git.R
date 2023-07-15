@@ -13,7 +13,8 @@
 #'
 #' @keywords internal
 
-git <- function(cmd, args, env = character(), timeout = 60 * 60, ...) {
+git <- function(cmd, args = character(), env = character(),
+                timeout = 60 * 60, ...) {
   processx::run(
     "git",
     args = c(cmd, args),
@@ -41,7 +42,18 @@ largest_git_files <- function(n = 10) {
     sep = " ",
     header = FALSE
   )
-  names(files) <- c("type", "hash", "size", "path")
+
+  # handle empty repos
+  if (ncol(files) == 2) {
+    files <- data.frame(
+      type = character(),
+      hash = character(),
+      size = character(),
+      path = character()
+    )
+  } else {
+    names(files) <- c("type", "hash", "size", "path")
+  }
 
   files <- files[files$type == "blob", ]
   files$size <- as.integer(files$size)

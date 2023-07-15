@@ -7,3 +7,11 @@ split_lines <- function(x) {
   }
   strsplit(x, "\n", fixed = TRUE)[[1]]
 }
+
+mkdirp <- function(x, showWarnings = FALSE, recursive = TRUE, ...) {
+  dir.create(x, showWarnings, recursive, ...)
+}
+
+safe_url <- function(url) {
+  sub("://[-:a-z0-9]+@", "://<token>@", url)
+}

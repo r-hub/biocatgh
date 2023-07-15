@@ -18,7 +18,8 @@ update_package <- function(pkg, state = NULL, force = FALSE) {
   git("clone", c("--mirror", ubioc, pkg))
   setwd(pkg)
 
-  if (largest_git_files()$size[1] > 100 * 1024 * 1024) {
+  largest_file <- largest_git_files()$size[1]
+  if (!is.na(largest_file) && largest_file > 100 * 1024 * 1024) {
     cli::cli_alert_danger("{.pkg {pkg}} has large files, giving up")
     return(invisible("large-files"))
   }
