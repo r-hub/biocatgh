@@ -67,7 +67,7 @@ calculate_state <- function(bioc, github) {
     missing = miss,
     extra = extra,
     different = diff,
-    repo_exists = exists,
+    repo_exists = gh_exists,
     needs_update = update
   )
 
