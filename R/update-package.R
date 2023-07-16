@@ -1,5 +1,5 @@
 
-update_package <- function(pkg, state = NULL, force = FALSE) {
+update_package <- function(pkg, state = NULL, force = FALSE, sleep = 1) {
   if (!force) {
     state <- state %||% get_missing_refs(pkg)
     if (!state$needs_update) {
@@ -39,16 +39,16 @@ update_package <- function(pkg, state = NULL, force = FALSE) {
   # Ignore the errors
   tryCatch({
     git("push", c("-q", "github", "devel"))
-    Sys.sleep(1)
+    Sys.sleep(sleep)
     git("push", c("-q", "github", "master"))
-    Sys.sleep(1)
+    Sys.sleep(sleep)
     git("push", c("-q", "github", "main"))
   }, error = function(e) e)
 
   # Need to remove these refs to avoid pushing them to GH
   unlink("refs/remotes", recursive = TRUE)
 
-  Sys.sleep(1)
+  Sys.sleep(sleep)
   git("push", c("-q", "github", "--mirror"))
 
   cli::cli_alert_success("{.pkg {pkg}} was updated")
