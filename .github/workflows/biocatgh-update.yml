@@ -7,7 +7,7 @@ jobs:
   gh-update:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/r-hub/r-minimal/r-minimal:latest
+      image: ghcr.io/r-hub/biocatgh/biocatgh:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
