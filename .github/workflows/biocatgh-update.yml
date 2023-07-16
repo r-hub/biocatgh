@@ -1,0 +1,32 @@
+name: Update Bioc@GH
+
+on:
+  workflow_dispatch:
+
+jobs:
+  gh-update:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/r-hub/r-minimal/r-minimal:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        BIOCATGH_GITHUB_TOKEN: ${{ secrets.BIOCATGH_GITHUB_TOKEN }}
+        GITHUB_PAT: ${{ secrets.BIOCATGH_GITHUB_TOKEN }}
+
+    steps:
+      - name: Git config
+        run: |
+          git config --global user.email "csardi.gabor+bioc@gmail.com"
+          git config --global user.name "BIOC@GH robot"
+          git config credential.helper cache
+      - name: Update outdated packages
+        run: |
+          gitcreds::gitcreds_approve(list(
+            url = "https://github.com",
+            username = "PersonalAccessToken",
+            password = Sys.getenv("GITHUB_PAT")
+          ))
+          biocatgh::update_all()
+        shell: Rscript {0}
