@@ -60,11 +60,13 @@ update_all <- function(bioc = NULL, sleep = 3) {
   if (length(upd)) {
     git("add", "github-refs")
     stat <- git("commit", c("-m", "github ref updates"), error_on_status = FALSE)
-    if (grepl("nothing to commit", stat$stdout)) {
-      cli::cli_alert_success("Nothing to update, everything current")
-    } else {
-      stop("git commit failed:\n", "stdout:\n", stat$stdout,
-           "stderr:\n", state$stderr)
+    if (stat$status != 0) {
+      if (grepl("nothing to commit", stat$stdout)) {
+        cli::cli_alert_success("Nothing to update, everything current")
+      } else {
+        stop("git commit failed:\n", "stdout:\n", stat$stdout,
+             "stderr:\n", state$stderr)
+      }
     }
     proc <- cli::cli_process_start("Push status cache to GitHub")
     git("push")
