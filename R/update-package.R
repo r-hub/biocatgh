@@ -1,4 +1,27 @@
 
+#' Update one package at the Bioconductor GitHub mirror
+#'
+#' @param pkg Package name.
+#' @param state `NULL`, or the return value of [get_missing_refs()] for
+#'   the package. If it is `NULL`, and it is needed (i.e. `force` is not
+#'   `TRUE`), then it is calculated.
+#' @param force `TRUE` or `FALSE`, whether to always (try to) update the
+#'   package withour checking the git refs in both repositories first.
+#'   Set this to `TRUE` if you know that an update is needed, to avoid
+#'   extra git queries.
+#' @param sleep Number of seconds to wait after GitHub git operations,
+#'   to please GitHub secondary rate limits.
+#'
+#' @return Character scalar, possible values:
+#'   * `"current"`: no updates are needed.
+#'   * `"large-files"`: the repository contains large files, no update was
+#'     attempted.
+#'   * `"updated"`: the repository was updated.
+#'
+#' @export
+#' @examplesIf FALSE
+#' update_package("limma")
+
 update_package <- function(pkg, state = NULL, force = FALSE, sleep = 1) {
   if (!force) {
     state <- state %||% get_missing_refs(pkg)

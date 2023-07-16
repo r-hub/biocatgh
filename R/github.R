@@ -1,4 +1,15 @@
 
+#' Craete a GitHub repository for a Bioconductor package
+#'
+#' @details
+#' If the repository already exists, then it does not error.
+#' This is detected by hte GitHub API returning a 422 HTTP status code.
+#' For other abnormal status codes it errors.
+#'
+#' @param pkg Package name.
+#'
+#' @export
+
 create_repo <- function(pkg) {
   cli::cli_alert_info("Creating repo for {.pkg {pkg}}")
   tryCatch(

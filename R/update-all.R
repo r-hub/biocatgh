@@ -1,4 +1,21 @@
 
+#' Update the Bioconductor mirror at GitHub
+#'
+#' @details
+#' The state of the GitHub mirror is obtained from
+#' https://github.com/r-hub/biocatgh-data. This data if updated, once all
+#' outdated GitHub repositories are updated.
+#'
+#' The `BIOCATGH_GITHUB_TOKEN` environment variable must be set to the
+#' GitHub personal access token to use to update this repository.
+#'
+#' @param bioc State od the Bioconductor git repository. If `NULL`, then
+#'   it is queried using [get_all_bioc_refs()].
+#' @param sleep Number of seconds to wait after each update, to please
+#'   GitHub secondary rate limits.
+#'
+#' @export
+
 update_all <- function(bioc = NULL, sleep = 3) {
 
   if (is.null(bioc)) {

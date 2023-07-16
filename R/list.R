@@ -47,6 +47,20 @@ ignored <- c(
   NULL
 )
 
+#' List all packages in the Bioconductor git repository
+#'
+#' @details
+#' It works by web scraping https://git.bioconductor.org, so it'll probably
+#' stop working if Bioconductor changes their git infrastructure.
+#'
+#' It skips packages that are known to e problematic, typically because
+#' of files bigger than 100MB. These files are not allowed on GitHub
+#'
+#' @return
+#' Sorted character vector of package (=repository) names.
+#'
+#' @export
+
 list_bioc_repos <- function() {
   url <- "https://git.bioconductor.org/"
   resp <- curl::curl_fetch_memory(url)
