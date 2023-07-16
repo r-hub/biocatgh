@@ -17,7 +17,6 @@ create_repo <- function(pkg) {
       )
     },
     error = function(err) {
-      browser()
       stop(err)
     }
   )
