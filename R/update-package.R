@@ -55,8 +55,8 @@ update_package <- function(pkg, state = NULL, force = FALSE, sleep = 1) {
     create_repo(pkg)
   }
 
-  # git("remote", c("add", "github", ugithub))
-  git("remote", c("add", "github", paste0("git@github.com:bioc/", pkg, ".git")))
+  git("remote", c("add", "github", ugithub))
+  # git("remote", c("add", "github", paste0("git@github.com:bioc/", pkg, ".git")))
 
   # Need to push devel first to make it the default branch
   # Ignore the errors
