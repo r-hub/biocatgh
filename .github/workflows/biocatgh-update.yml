@@ -3,7 +3,7 @@ name: Update Bioc@GH
 on:
   workflow_dispatch:
   schedule:
-    - cron:  '27 1,5,9,13,17,21 * * *'
+    - cron:  '27 1 * * *'
 
 jobs:
   gh-update:
