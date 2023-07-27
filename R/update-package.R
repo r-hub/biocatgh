@@ -38,8 +38,25 @@ update_package <- function(pkg, state = NULL, force = FALSE, sleep = 1) {
   pkgdir <- withr::local_tempdir("biocatgh")
   withr::local_dir(pkgdir)
 
-  git("clone", c("--mirror", ubioc, pkg))
+  # Clone from GH, if it is there
+  tryCatch({
+    if (isTRUE(state$repo_exists)) git("clone", c("--mirror", ugithub, pkg))
+  }, error = function(e) e)
+
+  # Otherwise, or if that failed, clone from Bioc
+  if (!file.exists(pkg)) {
+    git("clone", c("--mirror", ubioc, pkg))
+  }
+
   setwd(pkg)
+
+  # make these always consistent
+  git("remote", c("add", "bioc", ubioc))
+  git("remote", c("add", "github", ugithub))
+  # git("remote", c("add", "github", paste0("git@github.com:bioc/", pkg, ".git")))
+
+  # Update from Bioc
+  git("remote", c("update", "--prune", "bioc"))
 
   largest_file <- largest_git_files()$size[1]
   if (!is.na(largest_file) && largest_file > 100 * 1024 * 1024) {
@@ -55,9 +72,6 @@ update_package <- function(pkg, state = NULL, force = FALSE, sleep = 1) {
     create_repo(pkg)
   }
 
-  git("remote", c("add", "github", ugithub))
-  # git("remote", c("add", "github", paste0("git@github.com:bioc/", pkg, ".git")))
-
   # Need to push devel first to make it the default branch
   # Ignore the errors
   tryCatch({
@@ -68,11 +82,11 @@ update_package <- function(pkg, state = NULL, force = FALSE, sleep = 1) {
     git("push", c("-q", "github", "main"))
   }, error = function(e) e)
 
-  # Need to remove these refs to avoid pushing them to GH
-  unlink("refs/remotes", recursive = TRUE)
-
   Sys.sleep(sleep)
-  git("push", c("-q", "github", "--mirror"))
+  # There is no better way to push the bioc remote to github....
+  r1 <- "+refs/remotes/bioc/*:refs/heads/*"
+  r2 <- "+refs/tags/*:refs/tags/*"
+  git("push", c("-q", "--prune", "github", r1, r2))
 
   cli::cli_alert_success("{.pkg {pkg}} was updated")
   invisible("updated")
