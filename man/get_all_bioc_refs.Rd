@@ -30,8 +30,6 @@ Other refs:
 \code{\link{get_all_github_refs}()},
 \code{\link{get_bioc_refs}()},
 \code{\link{get_github_refs}()},
-\code{\link{get_missing_refs}()},
-\code{\link{read_github_state}()},
-\code{\link{write_github_state}()}
+\code{\link{get_missing_refs}()}
 }
 \concept{refs}

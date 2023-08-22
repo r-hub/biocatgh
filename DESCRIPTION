@@ -16,6 +16,8 @@ Imports:
     cli,
     curl,
     gh,
+    jsonlite,
+    parsedate,
     pkgdepends,
     withr
 Remotes:

@@ -4,23 +4,14 @@
 \alias{update_all}
 \title{Update the Bioconductor mirror at GitHub}
 \usage{
-update_all(bioc = NULL, sleep = 3)
+update_all(sleep = 5)
 }
 \arguments{
-\item{bioc}{State od the Bioconductor git repository. If \code{NULL}, then
-it is queried using \code{\link[=get_all_bioc_refs]{get_all_bioc_refs()}}.}
-
 \item{sleep}{Number of seconds to wait after each update, to please
-GitHub secondary rate limits.}
+GitHub secondary rate limits, and be gentle on the Bioconductor git
+server.}
 }
 \description{
-Update the Bioconductor mirror at GitHub
-}
-\details{
-The state of the GitHub mirror is obtained from
-https://github.com/r-hub/biocatgh-data. This data if updated, once all
-outdated GitHub repositories are updated.
-
 The \code{BIOCATGH_GITHUB_TOKEN} environment variable must be set to the
 GitHub personal access token to use to update this repository.
 }
