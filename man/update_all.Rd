@@ -4,12 +4,15 @@
 \alias{update_all}
 \title{Update the Bioconductor mirror at GitHub}
 \usage{
-update_all(sleep = 5)
+update_all(sleep = 5, all = FALSE)
 }
 \arguments{
 \item{sleep}{Number of seconds to wait after each update, to please
 GitHub secondary rate limits, and be gentle on the Bioconductor git
 server.}
+
+\item{all}{Whether to try to update all packages. If \code{FALSE}, then
+we stop as soon as a package is current.}
 }
 \description{
 The \code{BIOCATGH_GITHUB_TOKEN} environment variable must be set to the

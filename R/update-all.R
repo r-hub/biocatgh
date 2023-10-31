@@ -7,10 +7,12 @@
 #' @param sleep Number of seconds to wait after each update, to please
 #'   GitHub secondary rate limits, and be gentle on the Bioconductor git
 #'   server.
+#' @param all Whether to try to update all packages. If `FALSE`, then
+#'   we stop as soon as a package is current.
 #'
 #' @export
 
-update_all <- function(sleep = 5) {
+update_all <- function(sleep = 5, all = FALSE) {
   pkgs_url <- "https://code.bioconductor.org/browse/packages.json"
   pkgs_raw <- jsonlite::fromJSON(pkgs_url)[["data"]]
   pkgs <- data.frame(
@@ -23,7 +25,7 @@ update_all <- function(sleep = 5) {
 
   for (idx in seq_along(pkgs$package)) {
     pkgs$status[idx] <- update_package(pkgs$package[idx])
-    if (pkgs$status[idx] == "current") break
+    if (!all && pkgs$status[idx] == "current") break
     Sys.sleep(sleep)
   }
 
