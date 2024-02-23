@@ -1,5 +1,7 @@
 name: Build Docker image and push to GitHub
-on: [push]
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   build:
