@@ -60,14 +60,18 @@ get_github_refs <- function(pkg) {
 
 async_get_github_refs <- function(pkg) {
   url <- github_url(pkg)
+
+  empty_df <- function() {
+    list(refs = data.frame(
+      stringsAsFactors = FALSE,
+      ref = character(),
+      hash = character()
+    ))
+  }
+
   asNamespace("pkgdepends")$async_git_list_refs(url)$
-    catch(async_http_401 = function(err) {
-      list(refs = data.frame(
-        stringsAsFactors = FALSE,
-        ref = character(),
-        hash = character()
-      ))
-    })$
+    catch(async_http_401 = function(err) empty_df())$
+    catch(async_http_404 = function(err) empty_df())$
     then(function(ret) order_refs(ret$refs))
  }
 

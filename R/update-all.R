@@ -7,23 +7,38 @@
 #' @param sleep Number of seconds to wait after each update, to please
 #'   GitHub secondary rate limits, and be gentle on the Bioconductor git
 #'   server.
-#' @param all Whether to try to update all packages. If `FALSE`, then
-#'   we stop as soon as a package is current.
 #'
 #' @export
 
-update_all <- function(sleep = 5, all = FALSE) {
-  pkgs_url <- "https://code.bioconductor.org/browse/packages.json"
-  pkgs_raw <- jsonlite::fromJSON(pkgs_url)[["data"]]
+update_all <- function(sleep = 5, gh_state = NULL, bioc_state = NULL) {
+  gh_state <- gh_state %||% {
+    cli::cli_alert_info("Getting all GH refs.")
+    get_all_github_refs("gh.rds")
+  }
+  bioc_state <- bioc_state %||% {
+    cli::cli_alert_info("Getting all Bioconductor refs.")
+    get_all_bioc_refs("bioc.rds")
+  }
+
+  missing <- setdiff(names(bioc_state), names(gh_state))
+  common <- intersect(names(bioc_state), names(gh_state))
+  gh_state <- gh_state[common]
+  bioc_state <- bioc_state[common]
+
+  behind <- vapply(common, function(nm) {
+   s <- calculate_state(bioc = bioc_state[[nm]], github = gh_state[[nm]])
+   s$needs_update
+  }, logical(1))
+
+  upd <- c(missing, names(which(behind)))
+  cli::cli_alert_info("Need to update {length(upd)} package{?s}.")
+
   pkgs <- data.frame(
-    stringsAsFactors = FALSE,
-    package = unhtml(pkgs_raw[,1]),
-    date = parse_date(sub("^([-0-9]+ [0-9:]+ [A-Z]+) .*$", "\\1", pkgs_raw[,2])),
+    package = upd,
     status = NA_character_
   )
-  pkgs <- pkgs[order(pkgs$date, decreasing = TRUE), ]
 
-  for (idx in seq_along(pkgs$package)) {
+  for (idx in seq_len(nrow(pkgs))) {
     c <- 0
     repeat {
       c <- c + 1
@@ -35,21 +50,8 @@ update_all <- function(sleep = 5, all = FALSE) {
         Sys.sleep(10)
       })
     }
-    if (!all && pkgs$status[idx] == "current") break
     Sys.sleep(sleep)
   }
 
-  invisible(pkgs)
-}
-
-unhtml <- function(x) {
-  x <- gsub("<[^>]*>", "", x)
-  x <- gsub("&[A-Za-z0-9]+;", "", x)
-  x
-}
-
-parse_date <- function(x) {
-  x <- sub(" ", "T", x)
-  x <- sub(" UTC", "Z", x)
-  parsedate::parse_iso_8601(x)
+  pkgs
 }
