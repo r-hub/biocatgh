@@ -4,14 +4,14 @@
 \alias{get_all_github_refs}
 \title{Download all git refs from the GitHub mirror of Bioconductor}
 \usage{
-get_all_github_refs(sleep = 1, saveas = NULL)
+get_all_github_refs(saveas = NULL, parallel_limit = 10L)
 }
 \arguments{
-\item{sleep}{Amount of seconds to wait after each request.}
-
 \item{saveas}{If not \code{NULL} then path to an RDS file, where the results
 are saved after each package. This is useful to still obtain a partial
 result if an error happens.}
+
+\item{parallel_limit}{The number of git queries to run concurrently.}
 }
 \value{
 Named list of data frames. Names are package names, entries
