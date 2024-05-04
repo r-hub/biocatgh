@@ -24,7 +24,17 @@ update_all <- function(sleep = 5, all = FALSE) {
   pkgs <- pkgs[order(pkgs$date, decreasing = TRUE), ]
 
   for (idx in seq_along(pkgs$package)) {
-    pkgs$status[idx] <- update_package(pkgs$package[idx])
+    c <- 0
+    repeat {
+      c <- c + 1
+      tryCatch({
+        pkgs$status[idx] <- update_package(pkgs$package[idx])
+        break
+      }, error = function(e) {
+        if (c == 3) stop(e)
+        Sys.sleep(10)
+      })
+    }
     if (!all && pkgs$status[idx] == "current") break
     Sys.sleep(sleep)
   }
