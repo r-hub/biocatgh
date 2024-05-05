@@ -22,7 +22,7 @@ jobs:
         run: |
           git config --global user.email "csardi.gabor+bioc@gmail.com"
           git config --global user.name "BIOC@GH robot"
-          git config --global credential.helper cache
+          git config --global credential.helper 'cache --timeout 21600'
       - name: Update outdated packages
         run: |
           gitcreds::gitcreds_approve(list(
