@@ -39,18 +39,19 @@ update_all <- function(sleep = 5, gh_state = NULL, bioc_state = NULL) {
   )
 
   for (idx in seq_len(nrow(pkgs))) {
-    c <- 0
-    repeat {
-      c <- c + 1
+    for(c in 1:3) {
       tryCatch({
         pkgs$status[idx] <- update_package(pkgs$package[idx])
         break
       }, error = function(e) {
-        if (c == 3) stop(e)
         Sys.sleep(10)
       })
     }
     Sys.sleep(sleep)
+  }
+
+  if(anyNA(pkgs$status)){
+    stop("Failed to update packages: ", paste(pkgs$package[is.na(pkgs$status)], collapse = ','))
   }
 
   pkgs
