@@ -72,6 +72,9 @@ update_package <- function(pkg, state = NULL, force = FALSE, sleep = 1) {
     create_repo(pkg)
   }
 
+  # For https://github.com/r-hub/biocatgh/issues/3
+  git("config", c("http.postBuffer", "524288000"))
+
   # Need to push devel first to make it the default branch
   # Ignore the errors
   tryCatch({
