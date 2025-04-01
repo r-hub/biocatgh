@@ -72,6 +72,11 @@ async_get_github_refs <- function(pkg) {
   asNamespace("pkgdepends")$async_git_list_refs(url)$
     catch(async_http_401 = function(err) empty_df())$
     catch(async_http_404 = function(err) empty_df())$
+    catch(error = function(err) {
+      cli::cli_alert_warning("Failed to get {.url {url}}, retrying after delay.")
+      Sys.sleep(30)
+      async_git_list_refs(url)
+    })$
     then(function(ret) order_refs(ret$refs))
  }
 
