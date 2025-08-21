@@ -29,7 +29,11 @@ get_bioc_refs <- function(pkg) {
 async_get_bioc_refs <- function(pkg) {
   url <- bioc_url(pkg)
   asNamespace("pkgdepends")$async_git_dumb_list_refs(url)$
-    then(function(ret) order_refs(ret$refs))
+    then(function(ret) order_refs(ret$refs))$
+      catch(error = function(e) {
+      cli::cli_alert_warning("Failed to get {.url {url}} for package {.pkg {pkg}}.")
+      list()
+    })
 }
 
 #' Get all git refs from the GitHub Bioconductor mirror
@@ -75,7 +79,7 @@ async_get_github_refs <- function(pkg) {
     catch(error = function(err) {
       cli::cli_alert_warning("Failed to get {.url {url}}, retrying after delay.")
       Sys.sleep(30)
-      async_git_list_refs(url)
+      asNamespace("pkgdepends")$async_git_list_refs(url)
     })$
     then(function(ret) order_refs(ret$refs))
  }
