@@ -85,6 +85,8 @@ async_get_github_refs <- function(pkg) {
  }
 
 order_refs <- function(x) {
+  # drop refs/heads/HEAD because it is the same as HEAD
+  x <- x[x$ref != "refs/heads/HEAD",, drop = FALSE]
   x <- x[order(x$ref),, drop = FALSE]
   rownames(x) <- NULL
   x
