@@ -26,9 +26,16 @@ get_bioc_refs <- function(pkg) {
 #' @details
 #' `async_get_bioc_refs()` is the aynchronous version of `get_bioc_refs()`.
 
+
+# git.bioconductor.org needs dumb git, but some repos redirect to GH
+# and these need git v1
+
 async_get_bioc_refs <- function(pkg) {
   url <- bioc_url(pkg)
   asNamespace("pkgdepends")$async_git_dumb_list_refs(url)$
+    catch(error = function(e) {
+      asNamespace("pkgdepends")$async_git_list_refs_v1(url)
+    })$
     then(function(ret) order_refs(ret$refs))$
       catch(error = function(e) {
       cli::cli_alert_warning("Failed to get {.url {url}} for package {.pkg {pkg}}.")
