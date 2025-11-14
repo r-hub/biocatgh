@@ -96,6 +96,9 @@ order_refs <- function(x) {
   x <- x[x$ref != "refs/heads/HEAD",, drop = FALSE]
   # also drop pull requests
   x <- x[!grepl("^refs/pull/", x$ref),, drop = FALSE]
+  # memes has a tag called 'refs/tags/v0.1.2^{}' which seems like a mistake
+  bad <- "refs/tags/v0.1.2^{}"
+  x <- x[!x$ref %in% bad,, drop = FALSE]
   x <- x[order(x$ref),, drop = FALSE]
   rownames(x) <- NULL
   x
