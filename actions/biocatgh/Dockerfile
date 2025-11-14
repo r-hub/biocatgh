@@ -4,6 +4,7 @@ FROM ghcr.io/r-hub/r-minimal/r-minimal:latest
 # To work around a certificate issue with the file, I exported their cert
 # from Firefox and add it manually to the container. The R command tests
 # the cert.
+RUN apk add --no-cache ca-certificates
 COPY bioconductor-org.pem /usr/local/share/ca-certificates/bioconductor-org.pem
 RUN update-ca-certificates
 RUN R -q -e 'download.file("https://code.bioconductor.org", tempfile())'
