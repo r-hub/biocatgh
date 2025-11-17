@@ -94,6 +94,7 @@ async_get_github_refs <- function(pkg) {
 order_refs <- function(x) {
   # drop refs/heads/HEAD because it is the same as HEAD
   x <- x[x$ref != "refs/heads/HEAD",, drop = FALSE]
+  x <- x[x$ref != "HEAD",, drop = FALSE]
   # also drop pull requests
   x <- x[!grepl("^refs/pull/", x$ref),, drop = FALSE]
   # memes has a tag called 'refs/tags/v0.1.2^{}' which seems like a mistake
