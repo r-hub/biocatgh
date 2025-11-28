@@ -38,6 +38,8 @@ update_all <- function(sleep = 5, gh_state = NULL, bioc_state = NULL) {
     status = NA_character_
   )
 
+  failures <- list()
+
   for (idx in seq_len(nrow(pkgs))) {
     c <- 0
     repeat {
@@ -46,11 +48,24 @@ update_all <- function(sleep = 5, gh_state = NULL, bioc_state = NULL) {
         pkgs$status[idx] <- update_package(pkgs$package[idx])
         break
       }, error = function(e) {
-        if (c == 3) stop(e)
-        Sys.sleep(10)
+        if (c == 3) {
+          failures <<- c(failures, structure(list(e), names = pkgs$package[idx]))
+          break
+        } else {
+          Sys.sleep(10)
+        }
       })
     }
     Sys.sleep(sleep)
+  }
+
+  if (length(failures) > 0) {
+    cli::cli_alert_danger("Failed to update {length(failures)} package{?s}.")
+    for (idx in seq_along(failures)) {
+      cli::cli_h2("{names(failures)[idx])}")
+      print(failures[[idx]])
+    }
+    stop("Update failure")
   }
 
   pkgs
