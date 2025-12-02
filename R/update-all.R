@@ -41,16 +41,13 @@ update_all <- function(sleep = 5, gh_state = NULL, bioc_state = NULL) {
   failures <- list()
 
   for (idx in seq_len(nrow(pkgs))) {
-    c <- 0
-    repeat {
-      c <- c + 1
+    for (c in 1:3) {
       tryCatch({
         pkgs$status[idx] <- update_package(pkgs$package[idx])
         break
       }, error = function(e) {
         if (c == 3) {
           failures <<- c(failures, structure(list(e), names = pkgs$package[idx]))
-          break
         } else {
           Sys.sleep(10)
         }
