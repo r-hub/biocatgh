@@ -59,7 +59,7 @@ update_all <- function(sleep = 5, gh_state = NULL, bioc_state = NULL) {
   if (length(failures) > 0) {
     cli::cli_alert_danger("Failed to update {length(failures)} package{?s}.")
     for (idx in seq_along(failures)) {
-      cli::cli_h2("{names(failures)[idx])}")
+      cli::cli_h2("{names(failures)[idx]}")
       print(failures[[idx]])
     }
     stop("Update failure")
