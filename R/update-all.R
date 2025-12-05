@@ -48,6 +48,9 @@ update_all <- function(sleep = 5, gh_state = NULL, bioc_state = NULL) {
       }, error = function(e) {
         if (c == 3) {
           failures <<- c(failures, structure(list(e), names = pkgs$package[idx]))
+          cli::cli_alert_danger(
+            "{.pkg {pkg}} failed to update, see full error at the end."
+          )
         } else {
           Sys.sleep(10)
         }
