@@ -12,8 +12,8 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@v5
       with:
-        name: docker.pkg.github.com/r-hub/biocatgh/biocatgh
+        name: ghcr.io/r-hub/biocatgh/biocatgh
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        registry: docker.pkg.github.com
+        registry: ghcr.io
         workdir: actions/biocatgh
