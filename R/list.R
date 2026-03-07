@@ -44,6 +44,7 @@ ignored <- c(
   "SwathXtend",
   "waveTilingData",
   "yriMulti",
+  "SEMplR",                          # was renamed to SEMPLR and GH is case insensitive
   NULL
 )
 
