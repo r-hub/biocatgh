@@ -10,33 +10,22 @@ ignored <- c(
   "ChIPXpressData",                  # experiment, large files
   "ConnectivityMap",                 # experiment, large files
   "CopyNumber450kData",              # experiment, large files
-  "curatedBreastData",               # experiment, large files
   "ELMER.data",                      # experiment, big files, git fails
-  "davidTiling",                     # experiment, large files
   "dsQTL",                           # old experiment, large files
   "Fletcher2013b",                   # experiment, large files
-  "FlowSorted.Blood.450k",           # experiment, large files
   "FlowSorted.CordBlood.450k",       # experiment, large files
   "FlowSorted.CordBloodNorway.450k", # experiment, large files
-  "FlowSorted.DLPFC.450k",           # experiment, large files
   "furrowSeg",                       # experiment, large files
   "GeuvadisTranscriptExpr",          # experiment, large filse
   "h5vc",                            # has large files in history, to be fixed
   "hapmapsnp6",                      # experiment, large filse
-  "HD2013SGI",                       # experiment, large files
-  "Hiiragi2013",                     # experiment, large files
   "ListerEtAlBSseq",                 # experiment, large files
   "mammaPrintData",
   "MEALData",
-  "methylationArrayAnalysis",
   "MMDiffBamSubset",
-  "msdata",
-  "msPurityData",
   "oneChannelGUI",
   "pd.atdschip.tiling",
   "proteomics",
-  "RforProteomics",
-  "RnBeads.hg19",
   "SCATEData",
   "sciCNV",
   "Single.mTEC.Transcriptomes",
