@@ -20,5 +20,3 @@ Imports:
     parsedate,
     pkgdepends,
     withr
-Remotes:
-    r-lib/pkgdepends
