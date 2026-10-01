@@ -50,7 +50,7 @@ get_all_github_refs <- function(saveas = NULL, parallel_limit = 10L) {
 #' get_all_github_refs(saveas = "bioc.rds")
 
 get_all_bioc_refs <- function(saveas = NULL, parallel_limit = 10L) {
-  pkgs <- list_bioc_repos()
+  pkgs <- c("manifest", list_bioc_repos())
   refs <- structure(vector("list", length(pkgs)), names = pkgs)
   i <- 0
 
